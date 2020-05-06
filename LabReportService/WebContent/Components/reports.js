@@ -22,8 +22,9 @@ $(document).on("click", "#btnSave", function(event) {
 	$("#formReport").submit();
 });
 // UPDATE==========================================
-$(document).on("click",".btnUpdate",function(event) {
-			$("#hidReportIDSave").val($(this).closest("tr").find('#hidReportIDUpdate').val());
+$(document).on("click", ".btnUpdate",function(event) {
+			$("#hidReportIDSave").val($(this).closest("tr").find('#hidReportIDUpdate').val()); 
+
 			$("#reportType").val($(this).closest("tr").find('td:eq(0)').text());
 			$("#description").val($(this).closest("tr").find('td:eq(1)').text());
 			$("#patientID").val($(this).closest("tr").find('td:eq(2)').text());

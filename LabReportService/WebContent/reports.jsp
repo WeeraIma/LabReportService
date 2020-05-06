@@ -15,10 +15,12 @@
 
 		//Insert--------------------------
 		if (request.getParameter("hidReportIDSave") == "") {
+			System.out.println("Insert >>>>> ");
 			stsMsg = itemObj.insertItem(request.getParameter("reportType"),
 					request.getParameter("description"),request.getParameter("patientID"),request.getParameter("doctorID"));
 		} else//Update----------------------
 		{
+			System.out.println("Update 123>>>> ");
 			stsMsg = itemObj.updateItem(request.getParameter("hidReportIDSave"),request.getParameter("reportType"),
 					request.getParameter("description"), request.getParameter("patientID"),
 					request.getParameter("doctorID"));
@@ -28,6 +30,7 @@
 
 	//Delete-----------------------------
 	if (request.getParameter("hidReportIDDelete") != null) {
+		System.out.println("Delete >>>> ");
 		report itemObj = new report();
 		String stsMsg = itemObj.deleteItem(request.getParameter("hidReportIDDelete"));
 		session.setAttribute("statusMsg", stsMsg);

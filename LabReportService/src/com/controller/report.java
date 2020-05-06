@@ -73,12 +73,12 @@ public class report { // A common method to connect to the DB
 				String patientName = rs.getString("patientID");
 				String doctorName = rs.getString("doctorID");
 // Add into the html table
-				output += "<tr><td><input id=\"hidItemIDUpdate\"name=\"hidItemIDUpdate\"type=\"hidden\" value=\"" + reportID + "\">"+ reportType + "</td>";
+				output += "<tr><td><input id=\"hidReportIDUpdate\"name=\"hideReportIDUpdate\"type=\"hidden\" value=\"" + reportID + "\">"+ reportType + "</td>";
 				output += "<td>" + description + "</td>";
 				output += "<td>" + patientName + "</td>";
 				output += "<td>" + doctorName + "</td>";
 // buttons
-				output += "<td><input name=\"btnUpdate\"type=\"button\" value=\"Update\"class=\" btnUpdate btn btn-secondary\"></td><td><form method=\"post\" action=\"reports.jsp\"><input name=\"btnRemove\" type=\"submit\"value=\"Remove\" class=\"btn btn-danger\"><input name=\"hidItemIDDelete\" type=\"hidden\"value=\"" + reportID + "\">" + "</form></td></tr>";
+				output += "<td><input name=\"btnUpdate\"type=\"button\" value=\"Update\"class=\" btnUpdate btn btn-secondary\"></td><td><form method=\"post\" action=\"reports.jsp\"><input name=\"btnRemove\" type=\"submit\"value=\"Remove\" class=\"btn btn-danger\"><input name=\"hidReportIDDelete\" type=\"hidden\"value=\"" + reportID + "\">" + "</form></td></tr>";
 			}
 			con.close();
 // Complete the html table
@@ -136,7 +136,7 @@ public class report { // A common method to connect to the DB
 			con.close();
 			output = "Updated successfully";
 		} catch (Exception e) {
-			output = "Error while updating the item."+e.getMessage();
+			output = "Error while updating the item.";
 			System.err.println(e.getMessage());
 		}
 		return output;
