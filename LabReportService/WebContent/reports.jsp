@@ -2,48 +2,6 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="com.controller.report" %>   
 
-<%
-	//Initialize---------------------------------
-	session.setAttribute("stausMsg", "");
-	System.out.println("Hi Trying to process...");
-
-	//Save---------------------------------
-	if (request.getParameter("reportType") != null) {
-		System.out.println("234CLICK BUTTONTrying to process...");
-		report itemObj = new report();
-		String stsMsg = "";
-
-		//Insert--------------------------
-		if (request.getParameter("hidReportIDSave") == "") {
-			System.out.println("Insert >>>>> ");
-			stsMsg = itemObj.insertItem(request.getParameter("reportType"),
-					request.getParameter("description"),request.getParameter("patientID"),request.getParameter("doctorID"));
-		} else//Update----------------------
-		{
-			System.out.println("Update 123>>>> ");
-			stsMsg = itemObj.updateItem(request.getParameter("hidReportIDSave"),request.getParameter("reportType"),
-					request.getParameter("description"), request.getParameter("patientID"),
-					request.getParameter("doctorID"));
-		}
-		session.setAttribute("statusMsg", stsMsg);
-	}
-
-	//Delete-----------------------------
-	if (request.getParameter("hidReportIDDelete") != null) {
-		System.out.println("Delete >>>> ");
-		report itemObj = new report();
-		String stsMsg = itemObj.deleteItem(request.getParameter("hidReportIDDelete"));
-		session.setAttribute("statusMsg", stsMsg);
-	}
-%>
-
-
-
-
-
-
-
- 
     
 <!DOCTYPE html>
 <html>
@@ -74,22 +32,21 @@
 					<input type="hidden" id="hidReportIDSave" name="hidReportIDSave" value="">
 				</form>
 				
-				<div id="alertSuccess" class="alert alert-success">
-				      <% 
-				      out.print(session.getAttribute("statusMsg")); 
-				      %>
-				</div>
+					<div id="alertSuccess" class="alert alert-success"></div>
 				<div id="alertError" class="alert alert-danger"></div>
 				<br>
+				
+				<div id="divItemsGrid">
+				
 				<% 
 				     report itemObj = new report();
 				     out.print(itemObj.readItems());
 				%>
 				
-			</div>
-</div>
-</div>
-			
+	</div>
+				</div>
+				</div>
+				</div>
 			
 			
 </body>

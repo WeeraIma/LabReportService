@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class report { // A common method to connect to the DB
+import javax.servlet.http.HttpServlet;
+
+public class report extends HttpServlet { // A common method to connect to the DB
 	private Connection connect() {
 		Connection con = null;
 		try {
@@ -45,10 +47,12 @@ public class report { // A common method to connect to the DB
 // execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Inserted successfully";
+			
+			String newReport = readItems();
+			output = "{\"status\":\"success\", \"data\": \"" +newReport + "\"}";
 		} catch (Exception e) {
-			output = "Error while inserting the item." + e.getMessage();
-			System.out.println("INSERT ERROR :"+e.getMessage());
+			output = "{\"status\":\"error\", \"data\":\"Error while inserting the item.\"}";
+			System.err.println(e.getMessage());
 		}
 		return output;
 	}
@@ -61,7 +65,7 @@ public class report { // A common method to connect to the DB
 				return "Error while connecting to the database for reading.";
 			}
 // Prepare the html table to be displayed
-			output = "<table border=\"1\"><tr><th>Report Type</th><th>Description</th><th>Assigned Doctor</th><th>Patient Name</th><th>Update</th><th>Remove</th></tr>";
+			output = "<table border='1'><tr><th>Report Type</th><th>Description</th><th>Assigned Doctor</th><th>Patient Name</th><th>Update</th><th>Remove</th></tr>";
 			String query = "select * from labreport";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -73,12 +77,14 @@ public class report { // A common method to connect to the DB
 				String patientName = rs.getString("patientID");
 				String doctorName = rs.getString("doctorID");
 // Add into the html table
-				output += "<tr><td><input id=\"hidReportIDUpdate\"name=\"hideReportIDUpdate\"type=\"hidden\" value=\"" + reportID + "\">"+ reportType + "</td>";
+				output += "<tr><td><input id='hidReportIDUpdate'name='hidReportIDUpdate'type='hidden' value='" + reportID+ "'>" + reportType + "</td>";
 				output += "<td>" + description + "</td>";
 				output += "<td>" + patientName + "</td>";
 				output += "<td>" + doctorName + "</td>";
 // buttons
-				output += "<td><input name=\"btnUpdate\"type=\"button\" value=\"Update\"class=\" btnUpdate btn btn-secondary\"></td><td><form method=\"post\" action=\"reports.jsp\"><input name=\"btnRemove\" type=\"submit\"value=\"Remove\" class=\"btn btn-danger\"><input name=\"hidReportIDDelete\" type=\"hidden\"value=\"" + reportID + "\">" + "</form></td></tr>";
+				output += "<td><input name='btnUpdate'type='button' value='Update'class='btnUpdate btn btn-secondary'></td>"+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger'data-itemid='"+ reportID + "'>" + "</td></tr>";
+				//output += "<td><input name='btnUpdate' type='button' value='Update' class='btnUpdate btn btn-secondary'></td><td><input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' data-reportid='" + reportID + "'>" + "</td></tr>";
+				//output += "<td><input name='btnUpdate' type='button' value='Update\"class=\" btnUpdate btn btn-secondary\"></td><td><form method=\"post\" action=\"reports.jsp\"><input name=\"btnRemove\" type=\"submit\"value=\"Remove\" class=\"btn btn-danger\"><input name=\"hidReportIDDelete\" type=\"hidden\"value=\"" + reportID + "\">" + "</form></td></tr>";
 			}
 			con.close();
 // Complete the html table
@@ -105,9 +111,12 @@ public class report { // A common method to connect to the DB
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Deleted successfully";
+			
+			String newReport = readItems();
+			output = "{\"status\":\"success\", \"data\": \"" +newReport + "\"}";
+			
 		} catch (Exception e) {
-			output = "Error while deleting the item. :" + e.getMessage();
+			output = "{\"status\":\"error\", \"data\":\"Error while deleting the item.\"}";
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -134,9 +143,12 @@ public class report { // A common method to connect to the DB
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Updated successfully";
+			
+			String newReport = readItems();
+			output = "{\"status\":\"success\", \"data\": \"" +newReport + "\"}";
+			
 		} catch (Exception e) {
-			output = "Error while updating the item.";
+			output = "{\"status\":\"error\", \"data\":\"Error while updating the item.\"}";
 			System.err.println(e.getMessage());
 		}
 		return output;
